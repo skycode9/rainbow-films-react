@@ -3,7 +3,7 @@ import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { Play, ExternalLink } from 'lucide-react'
 
-export default function Portfolio() {
+export default function Films() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -66,7 +66,7 @@ export default function Portfolio() {
     : projects.filter(project => project.category === selectedCategory)
 
   return (
-    <section id="portfolio" className="py-20 bg-gradient-to-b from-gray-900 to-black" ref={ref}>
+    <section id="films" className="py-20 bg-gradient-to-b from-gray-900 to-black" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -76,7 +76,7 @@ export default function Portfolio() {
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
             <span className="text-white">Our</span>{' '}
-            <span className="text-white">Portfolio</span>
+            <span className="text-white">Films</span>
           </h2>
           <div className="w-24 h-1 bg-white mx-auto mb-8" />
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">

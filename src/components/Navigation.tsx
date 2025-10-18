@@ -5,14 +5,14 @@ import { Menu, X } from 'lucide-react'
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection] = useState('hero')
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
       
       // Update active section based on scroll position
-      const sections = ['home', 'about', 'services', 'portfolio', 'contact']
+      const sections = ['hero', 'films', 'about', 'contact']
       const scrollPosition = window.scrollY + 100
       
       for (const section of sections) {
@@ -38,7 +38,7 @@ export default function Navigation() {
     if (element) {
       const offsetTop = element.offsetTop
       window.scrollTo({
-        top: sectionId === 'home' ? 0 : offsetTop - 80, // Account for fixed navbar
+        top: sectionId === 'hero' ? 0 : offsetTop - 80, // Account for fixed navbar
         behavior: 'smooth'
       })
     }
@@ -46,10 +46,8 @@ export default function Navigation() {
   }
 
   const navItems = [
-    { name: 'Home', href: 'home' },
+    { name: 'Films', href: 'films' },
     { name: 'About', href: 'about' },
-    { name: 'Services', href: 'services' },
-    { name: 'Portfolio', href: 'portfolio' },
     { name: 'Contact', href: 'contact' },
   ]
 
@@ -68,7 +66,7 @@ export default function Navigation() {
           <motion.div
             className="text-2xl font-bold cursor-pointer"
             whileHover={{ scale: 1.05 }}
-            onClick={() => scrollToSection('home')}
+            onClick={() => scrollToSection('hero')}
           >
             <span className="text-white">
               RAINBOW

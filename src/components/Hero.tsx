@@ -67,7 +67,7 @@ export default function Hero() {
 
   return (
     <section
-      id="home"
+      id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
       {/* 3D Canvas Background */}
