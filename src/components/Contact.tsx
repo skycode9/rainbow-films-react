@@ -44,16 +44,16 @@ export default function Contact() {
       info: "hello@rainbowfilms.com",
       link: "mailto:hello@rainbowfilms.com",
     },
-    {
-      icon: Phone,
-      title: "Phone",
-      info: "+1 (555) 123-4567",
-      link: "tel:+15551234567",
-    },
+    // {
+    //   icon: Phone,
+    //   title: "Phone",
+    //   info: "+1 (555) 123-4567",
+    //   link: "tel:+15551234567",
+    // },
     {
       icon: MapPin,
       title: "Location",
-      info: "Los Angeles, CA",
+      info: "Ahemdabad, Gujarat",
       link: "#",
     },
   ];

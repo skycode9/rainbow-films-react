@@ -3,7 +3,6 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import {
   Mail,
-  Phone,
   MapPin,
   Instagram,
   Twitter,
@@ -21,28 +20,14 @@ export default function Footer() {
     if (element) {
       const offsetTop = element.offsetTop;
       window.scrollTo({
-        top: sectionId === 'home' ? 0 : offsetTop - 80, // Account for fixed navbar
-        behavior: 'smooth'
+        top: sectionId === "home" ? 0 : offsetTop - 80, // Account for fixed navbar
+        behavior: "smooth",
       });
     }
   };
 
-  const quickLinks = [
-    { name: "Home", href: "home" },
-    { name: "About", href: "about" },
-    { name: "Services", href: "services" },
-    { name: "Portfolio", href: "portfolio" },
-    { name: "Contact", href: "contact" },
-  ];
-
-  const services = [
-    "Cinematography",
-    "Post-Production",
-    "Creative Direction",
-    "Audio Production",
-    "Live Streaming",
-    "Brand Content",
-  ];
+  // Get current year dynamically
+  const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     { icon: Instagram, href: "#", label: "Instagram" },
@@ -60,7 +45,7 @@ export default function Footer() {
       <div className="w-full h-1 bg-rainbow-gradient" />
 
       <div className="container mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid md:grid-cols-2 gap-12">
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -70,7 +55,7 @@ export default function Footer() {
             <motion.div
               className="text-3xl font-bold mb-6 cursor-pointer"
               whileHover={{ scale: 1.05 }}
-              onClick={() => scrollToSection('home')}
+              onClick={() => scrollToSection("home")}
             >
               <span className="text-white bg-clip-text text-transparent">
                 RAINBOW
@@ -87,72 +72,17 @@ export default function Footer() {
                 <span className="text-sm">hello@rainbowfilms.com</span>
               </div>
               <div className="flex items-center gap-3 text-gray-300">
-                <Phone size={16} className="text-white" />
-                <span className="text-sm">+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
                 <MapPin size={16} className="text-white" />
-                <span className="text-sm">Los Angeles, CA</span>
+                <span className="text-sm">Ahemdabad, Gujarat</span>
               </div>
             </div>
-          </motion.div>
-
-          {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Quick Links</h3>
-            <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
-                <motion.li key={link.name}>
-                  <motion.div
-                    whileHover={{ x: 5 }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.4, delay: 0.2 + index * 0.05 }}
-                  >
-                    <button
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-gray-300 hover:text-white transition-colors duration-300 text-sm"
-                    >
-                      {link.name}
-                    </button>
-                  </motion.div>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Services */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Services</h3>
-            <ul className="space-y-3">
-              {services.map((service, index) => (
-                <motion.li
-                  key={service}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
-                >
-                  <span className="text-gray-300 text-sm hover:text-white transition-colors duration-300 cursor-pointer">
-                    {service}
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
           </motion.div>
 
           {/* Newsletter & Social */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
             <h3 className="text-xl font-bold text-white mb-6">
               Stay Connected
@@ -214,14 +144,14 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <span>© 2024 Rainbow Films. Made with</span>
+              <span>© {currentYear} Rainbow Films. Made with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               >
                 <Heart size={16} className="text-red-500 fill-current" />
               </motion.div>
-              <span>in Los Angeles</span>
+              <span>in Ahemdabad</span>
             </div>
 
             <div className="flex gap-6 text-gray-400 text-sm">
