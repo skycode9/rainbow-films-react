@@ -1,12 +1,12 @@
-import { useEffect, Suspense, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { Suspense, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import { Canvas, useFrame } from '@react-three/fiber';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { MeshTransmissionMaterial } from '@react-three/drei';
-import { Mesh } from 'three';
-import { Fluid } from './fluid/Fluid';
-import VideoModal from './VideoModal';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { MeshTransmissionMaterial } from "@react-three/drei";
+import { Mesh } from "three";
+import { Fluid } from "./fluid/Fluid";
+import VideoModal from "./VideoModal";
 
 // Optional 3D Torus for background depth
 const Torus = () => {
@@ -40,26 +40,8 @@ const Torus = () => {
 };
 
 export default function Hero() {
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-  const springConfig = { damping: 25, stiffness: 150 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [cursorX, cursorY]);
 
   const handlePlayClick = () => {
     setIsVideoModalOpen(true);
@@ -100,28 +82,18 @@ export default function Hero() {
                 densityDissipation={0.95}
                 velocityDissipation={0.98}
               />
-              <Bloom 
-                intensity={0.1} 
-                luminanceThreshold={0.95} 
+              <Bloom
+                intensity={0.1}
+                luminanceThreshold={0.95}
                 luminanceSmoothing={0.95}
               />
             </EffectComposer>
           </Suspense>
         </Canvas>
-        
+
         {/* Gradient overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
-        
-        {/* Invisible mouse tracking area */}
-        <div 
-          className="absolute inset-0 pointer-events-auto"
-          style={{ background: 'transparent' }}
-          onMouseMove={(e) => {
-            // Update cursor position for fluid effect
-            cursorX.set(e.clientX);
-            cursorY.set(e.clientY);
-          }}
-        />
+
       </div>
 
       {/* Main Content */}
@@ -175,21 +147,13 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <span className="text-white">Rainbow</span>{' '}
-          <span className="bg-rainbow-gradient bg-clip-text text-transparent">Films</span>
+          <span className="text-white">Rainbow</span>{" "}
+          <span className="bg-rainbow-gradient bg-clip-text text-transparent">
+            Films
+          </span>
         </motion.p>
       </div>
 
-      {/* Mouse follower indicator */}
-      <motion.div
-        className="fixed w-8 h-8 rounded-full border-2 border-white/30 pointer-events-none z-50"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      />
 
       {/* Video Modal */}
       <VideoModal
