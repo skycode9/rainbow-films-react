@@ -542,6 +542,20 @@ html {
   animation-play-state: paused;
 }
 
+/* Team Marquee Animation */
+@keyframes teamMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: teamMarquee 25s linear infinite;
+}
+
 /* Text selection */
 ::selection {
   background: rgba(168, 85, 247, 0.3);
