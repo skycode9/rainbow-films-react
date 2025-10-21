@@ -224,14 +224,14 @@ export default function Contact() {
                   transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                    <item.icon className="w-6 h-6 text-purple-400" />
+                  <div className="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-lg flex items-center justify-center transition-colors duration-300">
+                    <item.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h4 className="text-white font-semibold">{item.title}</h4>
                     <a
                       href={item.link}
-                      className="text-gray-300 hover:text-purple-400 transition-colors duration-300"
+                      className="text-gray-300 hover:text-white transition-colors duration-300"
                     >
                       {item.info}
                     </a>
@@ -248,7 +248,7 @@ export default function Contact() {
                   <motion.a
                     key={social.label}
                     href={social.href}
-                    className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-gray-400 hover:text-purple-400 hover:bg-gray-800 transition-all duration-300"
+                    className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-300"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.9 }}
                     initial={{ opacity: 0, y: 20 }}

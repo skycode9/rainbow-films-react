@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 const Clients = () => {
   const clients = [
     "Netflix",
@@ -11,12 +13,32 @@ const Clients = () => {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-900/50 to-black/50 overflow-hidden">
+    <section className="py-16 bg-black overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Trusted by Industry Leaders
           </h2>
+          <motion.div
+            className="relative w-64 h-0.5 mx-auto mb-6 overflow-hidden"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+              animate={{
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             We've had the privilege to work with some of the biggest names in
             the entertainment industry

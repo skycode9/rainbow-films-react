@@ -66,7 +66,7 @@ export default function Films() {
     : projects.filter(project => project.category === selectedCategory)
 
   return (
-    <section id="films" className="py-20 bg-gradient-to-b from-gray-900 to-black" ref={ref}>
+    <section id="films" className="py-20 bg-black" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -78,7 +78,26 @@ export default function Films() {
             <span className="text-white">Our</span>{' '}
             <span className="text-white">Films</span>
           </h2>
-          <div className="w-24 h-1 bg-white mx-auto mb-8" />
+          <motion.div
+            className="relative w-32 h-0.5 mx-auto mb-8 overflow-hidden"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+              animate={{
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Explore our diverse collection of award-winning films, commercials, 
             and creative content that showcase our passion for visual storytelling.
