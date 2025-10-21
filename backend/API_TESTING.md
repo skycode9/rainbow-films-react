@@ -14,13 +14,13 @@ npm install
 npm run dev
 ```
 
-Server should be running at: `http://localhost:3000`
+Server should be running at: `http://localhost:3400`
 
 ---
 
 ### 2️⃣ Create Admin Account (ONE TIME ONLY)
 
-**POST** `http://localhost:3000/api/auth/create-admin`
+**POST** `http://localhost:3400/api/auth/create-admin`
 
 **Body (JSON):**
 ```json
@@ -48,7 +48,7 @@ Server should be running at: `http://localhost:3000`
 
 ### 3️⃣ Login as Admin
 
-**POST** `http://localhost:3000/api/auth/login`
+**POST** `http://localhost:3400/api/auth/login`
 
 **Body (JSON):**
 ```json
@@ -79,7 +79,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Update Hero Video (Requires Login)
 
-**PUT** `http://localhost:3000/api/hero-video`
+**PUT** `http://localhost:3400/api/hero-video`
 
 **Body (JSON):**
 ```json
@@ -91,7 +91,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Get Current Hero Video (Public)
 
-**GET** `http://localhost:3000/api/hero-video`
+**GET** `http://localhost:3400/api/hero-video`
 
 ---
 
@@ -99,7 +99,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Create a New Film (Requires Login)
 
-**POST** `http://localhost:3000/api/films`
+**POST** `http://localhost:3400/api/films`
 
 **Body (JSON):**
 ```json
@@ -114,17 +114,17 @@ Server should be running at: `http://localhost:3000`
 
 ### Get All Films (Public)
 
-**GET** `http://localhost:3000/api/films`
+**GET** `http://localhost:3400/api/films`
 
-**GET** `http://localhost:3000/api/films?category=Music Video`
+**GET** `http://localhost:3400/api/films?category=Music Video`
 
 ### Get All Films as Admin (Requires Login)
 
-**GET** `http://localhost:3000/api/films/admin/all`
+**GET** `http://localhost:3400/api/films/admin/all`
 
 ### Update a Film (Requires Login)
 
-**PUT** `http://localhost:3000/api/films/{filmId}`
+**PUT** `http://localhost:3400/api/films/{filmId}`
 
 **Body (JSON):**
 ```json
@@ -140,7 +140,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Delete a Film (Requires Login)
 
-**DELETE** `http://localhost:3000/api/films/{filmId}`
+**DELETE** `http://localhost:3400/api/films/{filmId}`
 
 ---
 
@@ -148,7 +148,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Submit Contact Form (Public)
 
-**POST** `http://localhost:3000/api/contact`
+**POST** `http://localhost:3400/api/contact`
 
 **Body (JSON):**
 ```json
@@ -162,15 +162,15 @@ Server should be running at: `http://localhost:3000`
 
 ### Get All Contacts (Requires Login)
 
-**GET** `http://localhost:3000/api/contact`
+**GET** `http://localhost:3400/api/contact`
 
 ### Mark Contact as Read (Requires Login)
 
-**PUT** `http://localhost:3000/api/contact/{contactId}/read`
+**PUT** `http://localhost:3400/api/contact/{contactId}/read`
 
 ### Delete Contact (Requires Login)
 
-**DELETE** `http://localhost:3000/api/contact/{contactId}`
+**DELETE** `http://localhost:3400/api/contact/{contactId}`
 
 ---
 
@@ -178,7 +178,7 @@ Server should be running at: `http://localhost:3000`
 
 ### Subscribe (Public)
 
-**POST** `http://localhost:3000/api/subscribe`
+**POST** `http://localhost:3400/api/subscribe`
 
 **Body (JSON):**
 ```json
@@ -189,15 +189,15 @@ Server should be running at: `http://localhost:3000`
 
 ### Get All Subscribers (Requires Login)
 
-**GET** `http://localhost:3000/api/subscribe`
+**GET** `http://localhost:3400/api/subscribe`
 
 ### Toggle Subscriber Status (Requires Login)
 
-**PUT** `http://localhost:3000/api/subscribe/{subscriberId}/toggle`
+**PUT** `http://localhost:3400/api/subscribe/{subscriberId}/toggle`
 
 ### Delete Subscriber (Requires Login)
 
-**DELETE** `http://localhost:3000/api/subscribe/{subscriberId}`
+**DELETE** `http://localhost:3400/api/subscribe/{subscriberId}`
 
 ---
 
@@ -205,11 +205,11 @@ Server should be running at: `http://localhost:3000`
 
 ### Check Auth Status
 
-**GET** `http://localhost:3000/api/auth/check`
+**GET** `http://localhost:3400/api/auth/check`
 
 ### Logout
 
-**POST** `http://localhost:3000/api/auth/logout`
+**POST** `http://localhost:3400/api/auth/logout`
 
 ---
 
@@ -272,14 +272,14 @@ Server should be running at: `http://localhost:3000`
 
 ### Create Admin:
 ```bash
-curl -X POST http://localhost:3000/api/auth/create-admin \
+curl -X POST http://localhost:3400/api/auth/create-admin \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"Admin@123","email":"admin@rainbowfilms.com"}'
 ```
 
 ### Login:
 ```bash
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:3400/api/auth/login \
   -H "Content-Type: application/json" \
   -c cookies.txt \
   -d '{"username":"admin","password":"Admin@123"}'
@@ -287,7 +287,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 
 ### Get Films (with cookie):
 ```bash
-curl -X GET http://localhost:3000/api/films \
+curl -X GET http://localhost:3400/api/films \
   -b cookies.txt
 ```
 

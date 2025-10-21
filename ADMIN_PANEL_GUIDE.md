@@ -11,7 +11,7 @@ Your admin panel is now fully integrated with both backend and frontend.
 **Frontend (Public Site):** http://localhost:5173  
 **Admin Login:** http://localhost:5173/admin/login  
 **Admin Dashboard:** http://localhost:5173/admin/dashboard  
-**Backend API:** http://localhost:8000
+**Backend API:** http://localhost:3400
 
 ---
 
@@ -24,7 +24,7 @@ cd backend
 npm run dev
 ```
 
-Server will run on: `http://localhost:8000`
+Server will run on: `http://localhost:3400`
 
 ### 2️⃣ Start Frontend Development Server
 
@@ -43,7 +43,7 @@ Frontend will run on: `http://localhost:5173`
 
 Use Thunder Client, Postman, or cURL:
 
-**POST** `http://localhost:8000/api/auth/create-admin`
+**POST** `http://localhost:3400/api/auth/create-admin`
 
 ```json
 {

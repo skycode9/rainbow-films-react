@@ -16,8 +16,8 @@ npm run dev
 You should see:
 ```
 ✅ Connected to MongoDB
-🚀 Server is running on port 3000
-📍 API: http://localhost:3000
+🚀 Server is running on port 3400
+📍 API: http://localhost:3400
 ```
 
 ---
@@ -26,7 +26,7 @@ You should see:
 
 Open **Thunder Client** or **Postman** and make this request:
 
-**POST** `http://localhost:3000/api/auth/create-admin`
+**POST** `http://localhost:3400/api/auth/create-admin`
 
 **Body:**
 ```json
@@ -43,7 +43,7 @@ Open **Thunder Client** or **Postman** and make this request:
 
 ## 🔑 Step 3: Login to Admin Panel
 
-**POST** `http://localhost:3000/api/auth/login`
+**POST** `http://localhost:3400/api/auth/login`
 
 **Body:**
 ```json
@@ -96,7 +96,7 @@ Manage your subscriber list
 ## 🌐 API Base URL
 
 ```
-http://localhost:3000/api
+http://localhost:3400/api
 ```
 
 ---

@@ -52,7 +52,7 @@ npm install
 
 **Backend (.env):**
 ```env
-PORT=8000
+PORT=3400
 DB_URI="your_mongodb_connection_string"
 SESSION_SECRET="your_secret_key"
 FRONTEND_URL="http://localhost:5173"
@@ -61,7 +61,7 @@ NODE_ENV="development"
 
 **Frontend (.env):**
 ```env
-VITE_API_URL=http://localhost:8000/api
+VITE_API_URL=http://localhost:3400/api
 ```
 
 ### 3️⃣ Start Services
@@ -71,7 +71,7 @@ VITE_API_URL=http://localhost:8000/api
 cd backend
 npm run dev
 ```
-✅ Backend running on: http://localhost:8000
+✅ Backend running on: http://localhost:3400
 
 **Terminal 2 - Frontend:**
 ```bash
@@ -84,7 +84,7 @@ npm run dev
 
 Use Thunder Client or Postman:
 
-**POST** `http://localhost:8000/api/auth/create-admin`
+**POST** `http://localhost:3400/api/auth/create-admin`
 
 ```json
 {
@@ -489,7 +489,7 @@ This project is private and confidential.
 
 **Public Website:** http://localhost:5173  
 **Admin Panel:** http://localhost:5173/admin/login  
-**Backend API:** http://localhost:8000
+**Backend API:** http://localhost:3400
 
 ---
 

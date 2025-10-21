@@ -15,10 +15,12 @@ const contactRoutes = require("./routes/contactRoutes");
 const subscribeRoutes = require("./routes/subscribeRoutes");
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,32 +51,32 @@ app.use("/api/subscribe", subscribeRoutes);
 
 // Health check route
 app.get("/", (req, res) => {
-  res.json({ 
-    success: true, 
-    message: "Rainbow Films Backend API is running!" 
+  res.json({
+    success: true,
+    message: "Rainbow Films Backend API is running!",
   });
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: "Route not found" 
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
   });
 });
 
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: "Something went wrong!",
-    error: process.env.NODE_ENV === "development" ? err.message : undefined
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
 // Connect to database and start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3434;
 connectDB()
   .then(() => {
     console.log("✅ Connected to MongoDB");

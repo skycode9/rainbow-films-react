@@ -7,9 +7,9 @@
 ## 🌐 Server Information
 
 **Status:** ✅ Running  
-**Port:** 8000  
-**API Base URL:** `http://localhost:8000`  
-**Health Check:** `http://localhost:8000/`  
+**Port:** 3400  
+**API Base URL:** `http://localhost:3400`  
+**Health Check:** `http://localhost:3400/`  
 **Database:** ✅ Connected to MongoDB
 
 ---
@@ -99,7 +99,7 @@ backend/
 
 Use **Thunder Client**, **Postman**, or **cURL**:
 
-**POST** `http://localhost:8000/api/auth/create-admin`
+**POST** `http://localhost:3400/api/auth/create-admin`
 
 **Body:**
 ```json
@@ -112,7 +112,7 @@ Use **Thunder Client**, **Postman**, or **cURL**:
 
 ### 2️⃣ Login
 
-**POST** `http://localhost:8000/api/auth/login`
+**POST** `http://localhost:3400/api/auth/login`
 
 **Body:**
 ```json
@@ -234,7 +234,7 @@ See `API_TESTING.md` for cURL examples
 
 Update your frontend to use:
 
-**Base URL:** `http://localhost:8000/api`
+**Base URL:** `http://localhost:3400/api`
 
 Enable credentials in axios/fetch:
 ```javascript
@@ -295,7 +295,7 @@ For issues or questions:
 
 Your Rainbow Films backend is fully operational and ready to manage your website content!
 
-**API:** http://localhost:8000  
+**API:** http://localhost:3400  
 **Status:** ✅ Online
 
 Happy coding! 🚀✨

@@ -23,7 +23,7 @@ npm install
 Create a `.env` file:
 
 ```env
-PORT=3000
+PORT=3400
 DB_URI="your_mongodb_connection_string"
 SESSION_SECRET="your_secret_key_here"
 FRONTEND_URL="http://localhost:5173"
@@ -40,7 +40,7 @@ npm run dev
 npm start
 ```
 
-Server will run on: `http://localhost:3000`
+Server will run on: `http://localhost:3400`
 
 ## 🔐 First Time Setup
 
@@ -62,7 +62,7 @@ Server will run on: `http://localhost:3000`
 
 ### Base URL
 ```
-http://localhost:3000/api
+http://localhost:3400/api
 ```
 
 ---
