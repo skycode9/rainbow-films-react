@@ -6,6 +6,7 @@ import About from "../components/About";
 import Contact from "../components/Contact";
 import Clients from "../components/Clients";
 import Footer from "../components/Footer";
+import BackToTop from "../components/BackToTop";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         <Contact />
       </section>
       <Footer />
+      <BackToTop />
     </main>
   );
 }

@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Mail,
   MapPin,
@@ -9,11 +12,80 @@ import {
   Linkedin,
   Youtube,
   Heart,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
+
+// Validation schema for subscribe
+const subscribeSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+type SubscribeFormData = z.infer<typeof subscribeSchema>;
 
 export default function Footer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SubscribeFormData>({
+    resolver: zodResolver(subscribeSchema),
+  });
+
+  // Auto-hide success message after 5 seconds
+  useEffect(() => {
+    if (submitStatus.type === "success") {
+      const timer = setTimeout(() => {
+        setSubmitStatus({ type: null, message: "" });
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
+
+  const onSubscribe = async (data: SubscribeFormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      // Save subscriber to backend (backend will send welcome email)
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3400'}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to subscribe');
+      }
+
+      setSubmitStatus({
+        type: "success",
+        message: "Successfully subscribed! Check your email for confirmation.",
+      });
+      reset();
+    } catch (error: any) {
+      console.error("Subscribe error:", error);
+      setSubmitStatus({
+        type: "error",
+        message: error.message || "Failed to subscribe. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -93,22 +165,67 @@ export default function Footer() {
             </p>
 
             {/* Newsletter Signup */}
-            <div className="mb-8">
+            <form onSubmit={handleSubmit(onSubscribe)} className="mb-8">
               <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
-                />
+                <div className="flex-1">
+                  <input
+                    type="email"
+                    {...register("email")}
+                    placeholder="Your email"
+                    className={`w-full px-3 py-2 bg-gray-800 border rounded text-sm text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
+                      errors.email ? "border-red-500" : "border-gray-700 focus:border-white"
+                    }`}
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-xs text-red-400 flex items-center gap-1">
+                      <AlertCircle size={12} />
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
                 <motion.button
-                  className="px-4 py-2 bg-white text-black text-sm font-semibold rounded hover:bg-gray-200 transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`px-4 py-2 text-sm font-semibold rounded transition-colors duration-300 ${
+                    isSubmitting
+                      ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                      : "bg-white text-black hover:bg-gray-200"
+                  }`}
+                  whileHover={!isSubmitting ? { scale: 1.05 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.95 } : {}}
                 >
-                  Subscribe
+                  {isSubmitting ? (
+                    <motion.div
+                      className="w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                  ) : (
+                    "Subscribe"
+                  )}
                 </motion.button>
               </div>
-            </div>
+
+              {/* Success/Error Message */}
+              {submitStatus.type && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`mt-3 p-3 rounded flex items-start gap-2 text-xs ${
+                    submitStatus.type === "success"
+                      ? "bg-green-900/30 border border-green-500/50 text-green-300"
+                      : "bg-red-900/30 border border-red-500/50 text-red-300"
+                  }`}
+                >
+                  {submitStatus.type === "success" ? (
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  )}
+                  <span>{submitStatus.message}</span>
+                </motion.div>
+              )}
+            </form>
 
             {/* Social Links */}
             <div>

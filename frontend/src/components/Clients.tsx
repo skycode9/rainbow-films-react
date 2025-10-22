@@ -25,9 +25,17 @@ const Clients = () => {
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to right, transparent, #8b5cf6, #3b82f6, #06b6d4, #10b981, #eab308, #f97316, #ec4899, transparent)'
+              }}
+            />
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to right, transparent, #a78bfa, #60a5fa, #22d3ee, #34d399, #fde047, #fb923c, #f472b6, transparent)'
+              }}
               animate={{
                 opacity: [0.3, 0.8, 0.3],
                 scale: [1, 1.2, 1],

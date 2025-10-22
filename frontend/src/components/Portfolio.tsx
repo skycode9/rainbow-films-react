@@ -2,10 +2,18 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Play, ExternalLink } from "lucide-react";
+import VideoModal from "./VideoModal";
 
 export default function Films() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
+
+  const handlePlayClick = (videoUrl: string) => {
+    setSelectedVideoUrl(videoUrl);
+    setIsVideoModalOpen(true);
+  };
 
   const projects = [
     {
@@ -48,26 +56,6 @@ export default function Films() {
         "https://images.unsplash.com/photo-1489599904472-445b83c3fb98?w=600&h=400&fit=crop",
       videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
-    {
-      id: 5,
-      title: "Urban Pulse",
-      category: "Music Video",
-      description:
-        "High-energy music video capturing the rhythm and energy of city life.",
-      thumbnail:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
-      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
-    },
-    {
-      id: 6,
-      title: "Innovation Summit",
-      category: "Commercial",
-      description:
-        "Corporate event coverage showcasing cutting-edge technology and innovation.",
-      thumbnail:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop",
-      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
-    },
   ];
 
   return (
@@ -84,14 +72,22 @@ export default function Films() {
             <span className="text-white">Films</span>
           </h2>
           <motion.div
-            className="relative w-32 h-0.5 mx-auto mb-8 overflow-hidden"
+            className="relative w-28 h-0.5 mx-auto mb-8 overflow-hidden"
             initial={{ opacity: 0, scaleX: 0 }}
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to right, transparent, #8b5cf6, #3b82f6, #06b6d4, #10b981, #eab308, #f97316, #ec4899, transparent)'
+              }}
+            />
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to right, transparent, #a78bfa, #60a5fa, #22d3ee, #34d399, #fde047, #fb923c, #f472b6, transparent)'
+              }}
               animate={{
                 opacity: [0.3, 0.8, 0.3],
                 scale: [1, 1.2, 1],
@@ -111,7 +107,7 @@ export default function Films() {
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
+        <motion.div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto" layout>
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -134,9 +130,9 @@ export default function Films() {
                     className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors duration-300"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => window.open(project.videoUrl, "_blank")}
+                    onClick={() => handlePlayClick(project.videoUrl)}
                   >
-                    <Play size={24} />
+                    <Play size={24} fill="black" />
                   </motion.button>
                 </div>
 
@@ -161,7 +157,7 @@ export default function Films() {
                   <motion.button
                     className="text-white font-semibold hover:text-gray-300 transition-colors duration-300"
                     whileHover={{ x: 5 }}
-                    onClick={() => window.open(project.videoUrl, "_blank")}
+                    onClick={() => handlePlayClick(project.videoUrl)}
                   >
                     Watch Now →
                   </motion.button>
@@ -181,6 +177,13 @@ export default function Films() {
           ))}
         </motion.div>
       </div>
+
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoUrl={selectedVideoUrl}
+      />
     </section>
   );
 }

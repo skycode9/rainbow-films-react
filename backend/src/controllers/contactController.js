@@ -1,4 +1,5 @@
 const Contact = require("../models/Contact");
+const { sendContactEmail } = require("../utils/emailService");
 
 // Submit contact form (Public)
 exports.submitContact = async (req, res) => {
@@ -13,6 +14,11 @@ exports.submitContact = async (req, res) => {
     });
 
     await contact.save();
+
+    // Send email notification (non-blocking)
+    sendContactEmail({ name, email, company, message }).catch((err) =>
+      console.error("Failed to send contact email:", err)
+    );
 
     res.status(201).json({
       success: true,
