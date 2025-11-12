@@ -36,21 +36,18 @@ export default defineConfig({
         manualChunks: (id) => {
           // Separate heavy libraries into their own chunks
           if (id.includes('node_modules')) {
-            // React core - must be first to ensure @react-three can access it
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+            // React core - must be first, exclude @react-three packages
+            if ((id.includes('/react/') || id.includes('/react-dom/') || id.includes('/scheduler/')) 
+                && !id.includes('@react-three')) {
               return 'react-vendor';
             }
-            // Three.js ecosystem - separate chunk (depends on react-vendor)
-            if (id.includes('three') || id.includes('@react-three')) {
+            // Three.js ecosystem + postprocessing (postprocessing depends on three)
+            if (id.includes('three') || id.includes('@react-three') || id.includes('postprocessing')) {
               return 'three-vendor';
             }
             // Animation libraries
             if (id.includes('framer-motion') || id.includes('lenis')) {
               return 'animation-vendor';
-            }
-            // Postprocessing effects
-            if (id.includes('postprocessing')) {
-              return 'postprocessing-vendor';
             }
             // Lucide icons
             if (id.includes('lucide-react')) {
