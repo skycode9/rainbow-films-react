@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { Linkedin, Mail } from "lucide-react";
 
-export default function About() {
+function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -50px 0px" });
 
   return (
     <section
@@ -30,19 +30,7 @@ export default function About() {
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-              animate={{
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
           </motion.div>
         </motion.div>
 
@@ -153,19 +141,7 @@ export default function About() {
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-                animate={{
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
             </motion.div>
             <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
               A collective of passionate creatives and storytellers bringing
@@ -201,6 +177,8 @@ export default function About() {
                         <img
                           src={member.image}
                           alt={member.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -305,3 +283,5 @@ const teamMembers = [
     accentColor: "from-slate-500 to-slate-700",
   },
 ];
+
+export default memo(About)

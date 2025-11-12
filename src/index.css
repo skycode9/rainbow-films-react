@@ -1,5 +1,5 @@
-/* Modern Typography Setup - Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+/* Modern Typography Setup - Google Fonts - Optimized */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;600&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,9 +7,9 @@
 /* Typography Variables */
 :root {
   /* Font Families */
-  --font-primary: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-secondary: "Manrope", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Courier New", monospace;
+  --font-primary: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-secondary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "Monaco", monospace;
   
   /* Font Weights */
   --font-thin: 100;
@@ -373,6 +373,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Performance optimizations - Streamlined */
+/* GPU acceleration for animated elements only when needed */
+.gpu-accelerate {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
 /* Typography Utility Classes */
 .font-primary {
   font-family: var(--font-primary);
@@ -524,36 +537,38 @@ html {
   }
 }
 
-/* Client Slider Animation */
+/* Client Slider Animation - Optimized */
 @keyframes clientsScroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .clients-scroll {
-  animation: clientsScroll 20s linear infinite;
+  animation: clientsScroll 30s linear infinite;
+  will-change: transform;
 }
 
 .clients-scroll:hover {
   animation-play-state: paused;
 }
 
-/* Team Marquee Animation */
+/* Team Marquee Animation - Optimized */
 @keyframes teamMarquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .animate-marquee {
-  animation: teamMarquee 25s linear infinite;
+  animation: teamMarquee 35s linear infinite;
+  will-change: transform;
 }
 
 /* Text selection */

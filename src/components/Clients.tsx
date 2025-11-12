@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 const Clients = () => {
   const clients = [
@@ -25,19 +26,7 @@ const Clients = () => {
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-              animate={{
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
           </motion.div>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             We've had the privilege to work with some of the biggest names in
@@ -78,4 +67,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default memo(Clients);

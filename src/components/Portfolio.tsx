@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo, memo } from 'react'
 import { Play, ExternalLink } from 'lucide-react'
 
-export default function Films() {
+function Films() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
+  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" })
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   const categories = ['All', 'Commercial', 'Documentary', 'Music Video', 'Short Film']
@@ -61,9 +61,12 @@ export default function Films() {
     }
   ]
 
-  const filteredProjects = selectedCategory === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory)
+  const filteredProjects = useMemo(
+    () => selectedCategory === 'All' 
+      ? projects 
+      : projects.filter(project => project.category === selectedCategory),
+    [selectedCategory]
+  )
 
   return (
     <section id="films" className="py-20 bg-black" ref={ref}>
@@ -84,19 +87,7 @@ export default function Films() {
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-              animate={{
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
           </motion.div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Explore our diverse collection of award-winning films, commercials, 
@@ -148,6 +139,8 @@ export default function Films() {
                 <img
                   src={project.thumbnail}
                   alt={project.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -221,3 +214,5 @@ export default function Films() {
     </section>
   )
 }
+
+export default memo(Films)

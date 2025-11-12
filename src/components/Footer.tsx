@@ -16,13 +16,18 @@ export default function Footer() {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === "home" || sectionId === "hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) {
-      const offsetTop = element.offsetTop;
-      window.scrollTo({
-        top: sectionId === "home" ? 0 : offsetTop - 80, // Account for fixed navbar
-        behavior: "smooth",
-      });
+      // Use scrollIntoView instead of offsetTop to avoid forced reflows
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Adjust for fixed navbar
+      setTimeout(() => {
+        window.scrollBy({ top: -80, behavior: "smooth" });
+      }, 0);
     }
   };
 
@@ -147,7 +152,7 @@ export default function Footer() {
               <span>© {currentYear} Rainbow Films. Made with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Heart size={16} className="text-red-500 fill-current" />
               </motion.div>

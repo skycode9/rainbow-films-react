@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { Linkedin, Mail } from "lucide-react";
 
 interface TeamMember {
@@ -66,7 +66,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.08,
     },
   },
 };
@@ -85,9 +85,9 @@ const cardVariants = {
   },
 };
 
-export default function Team() {
+function Team() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" });
 
   return (
     <section
@@ -161,6 +161,8 @@ export default function Team() {
                       <img
                         src={member.image}
                         alt={member.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       />
                       {/* Overlay on hover */}
@@ -239,3 +241,5 @@ export default function Team() {
     </section>
   );
 }
+
+export default memo(Team)

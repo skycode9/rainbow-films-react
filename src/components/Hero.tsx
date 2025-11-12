@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef, useState, memo, lazy } from "react";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -6,16 +6,19 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { MeshTransmissionMaterial } from "@react-three/drei";
 import { Mesh } from "three";
 import { Fluid } from "./fluid/Fluid";
-import VideoModal from "./VideoModal";
 
-// Optional 3D Torus for background depth
-const Torus = () => {
+// Lazy load VideoModal to reduce initial bundle
+const VideoModal = lazy(() => import("./VideoModal"));
+
+// Optional 3D Torus for background depth - Optimized
+const Torus = memo(() => {
   const meshRef = useRef<Mesh>(null);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (!meshRef.current) return;
-    meshRef.current.rotation.y += 0.005;
-    meshRef.current.rotation.x += 0.002;
+    // Use delta for frame-independent animation
+    meshRef.current.rotation.y += delta * 0.3;
+    meshRef.current.rotation.x += delta * 0.12;
   });
 
   return (
@@ -37,9 +40,9 @@ const Torus = () => {
       />
     </mesh>
   );
-};
+});
 
-export default function Hero() {
+function Hero() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
 
@@ -57,13 +60,13 @@ export default function Hero() {
         <Canvas
           className="absolute inset-0 pointer-events-none"
           camera={{ position: [0, 0, 5], fov: 75 }}
-          dpr={[1, 1.5]}
-          performance={{ min: 0.5 }}
+          dpr={[0.75, 1]}
+          performance={{ min: 0.5, max: 1 }}
           frameloop="always"
+          gl={{ antialias: false, powerPreference: "high-performance" }}
         >
           <Suspense fallback={null}>
-            <ambientLight intensity={0.2} />
-            <directionalLight position={[5, 5, 5]} intensity={0.5} />
+            <ambientLight intensity={0.15} />
             <Torus />
             <EffectComposer>
               <Fluid
@@ -127,17 +130,8 @@ export default function Hero() {
             <Play size={32} className="text-black ml-1" fill="black" />
           </div>
 
-          {/* Ripple effect on hover */}
-          <motion.div
-            className="absolute inset-0 rounded-full border-2 border-white/20"
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.5, opacity: 0 }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeOut",
-            }}
-          />
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 rounded-full border-2 border-white/10" />
         </motion.button>
 
         {/* Rainbow Films branding */}
@@ -155,12 +149,18 @@ export default function Hero() {
       </div>
 
 
-      {/* Video Modal */}
-      <VideoModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-        videoUrl="https://www.youtube.com/watch?v=eeJFh3YhPEs"
-      />
+      {/* Video Modal - Lazy Loaded */}
+      {isVideoModalOpen && (
+        <Suspense fallback={null}>
+          <VideoModal
+            isOpen={isVideoModalOpen}
+            onClose={() => setIsVideoModalOpen(false)}
+            videoUrl="https://www.youtube.com/watch?v=eeJFh3YhPEs"
+          />
+        </Suspense>
+      )}
     </section>
   );
 }
+
+export default memo(Hero)

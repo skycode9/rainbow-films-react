@@ -1,46 +1,70 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
-export default function Navigation() {
+function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
 
   useEffect(() => {
+    // Throttled scroll handler for navbar background
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-      
-      // Update active section based on scroll position
-      const sections = ['hero', 'films', 'about', 'contact']
-      const scrollPosition = window.scrollY + 100
-      
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const offsetTop = element.offsetTop
-          const offsetBottom = offsetTop + element.offsetHeight
-          
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section)
-            break
-          }
-        }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50)
+          ticking = false;
+        });
+        ticking = true;
       }
     }
     
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // IntersectionObserver for active section detection (no forced reflows!)
+    const sections = ['hero', 'films', 'about', 'contact']
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '-80px 0px -50% 0px'
+    }
+    
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }
+    
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+    
+    // Observe all sections
+    sections.forEach(sectionId => {
+      const element = document.getElementById(sectionId)
+      if (element) observer.observe(element)
+    })
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
+    }
   }, [])
 
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setIsOpen(false)
+      return
+    }
     const element = document.getElementById(sectionId)
     if (element) {
-      const offsetTop = element.offsetTop
-      window.scrollTo({
-        top: sectionId === 'hero' ? 0 : offsetTop - 80, // Account for fixed navbar
-        behavior: 'smooth'
-      })
+      // Use scrollIntoView instead of offsetTop to avoid forced reflows
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // Adjust for fixed navbar
+      setTimeout(() => {
+        window.scrollBy({ top: -80, behavior: 'smooth' })
+      }, 0)
     }
     setIsOpen(false)
   }
@@ -138,3 +162,5 @@ export default function Navigation() {
     </motion.nav>
   )
 }
+
+export default memo(Navigation)

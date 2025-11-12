@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
+import { memo } from 'react'
 
-export default function LoadingAnimation() {
+function LoadingAnimation() {
   return (
     <motion.div
       className="fixed inset-0 z-50 bg-black flex items-center justify-center"
@@ -48,36 +49,13 @@ export default function LoadingAnimation() {
         </motion.p>
       </div>
 
-      {/* Animated particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => {
-          const colors = ['#40e0d0', '#3fdfd1', '#0473fa', '#8ed34e', '#d7c521', '#e47e4a', '#ec5065'];
-          const randomColor = colors[Math.floor(Math.random() * colors.length)];
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute w-3 h-3 rounded-full opacity-60"
-              style={{ backgroundColor: randomColor }}
-              initial={{
-                x: Math.random() * 1200,
-                y: 800,
-              }}
-              animate={{
-                y: -50,
-                opacity: [0.6, 1, 0.6],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                delay: Math.random() * 2,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-            />
-          );
-        })}
+      {/* Simplified background gradient */}
+      <div className="absolute inset-0 overflow-hidden opacity-20">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/30 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-purple-500/30 to-transparent rounded-full blur-3xl" />
       </div>
     </motion.div>
   )
 }
+
+export default memo(LoadingAnimation)

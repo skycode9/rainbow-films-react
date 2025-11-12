@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import Lenis from "lenis";
@@ -10,47 +10,58 @@ function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    // Initialize Lenis for smooth scrolling
+    // Initialize Lenis for smooth scrolling - Optimized settings
     const lenis = new Lenis({
-      duration: 0.8,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      duration: 1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1.2,
-      touchMultiplier: 2,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      infinite: false,
     });
 
+    // Optimized RAF loop with throttling
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    // Loading animation
+    // Loading animation - reduced time
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
 
-    // Back to top visibility
+    // Back to top visibility - throttled
+    let scrollTicking = false;
     const handleScroll = () => {
-      setShowBackToTop(window.pageYOffset > 300);
+      if (!scrollTicking) {
+        window.requestAnimationFrame(() => {
+          setShowBackToTop(window.pageYOffset > 300);
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       clearTimeout(timer);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  };
+  }, []);
 
   return (
     <div className="bg-black text-white overflow-hidden">

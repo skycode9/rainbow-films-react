@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import {
   Mail,
   MapPin,
@@ -11,9 +11,9 @@ import {
   Youtube,
 } from "lucide-react";
 
-export default function Contact() {
+function Contact() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,20 +21,20 @@ export default function Contact() {
     message: "",
   });
 
-  const handleInputChange = (
+  const handleInputChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
-  };
+    }));
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here
     console.log("Form submitted:", formData);
-  };
+  }, [formData]);
 
   const contactInfo = [
     {
@@ -280,3 +280,5 @@ export default function Contact() {
     </section>
   );
 }
+
+export default memo(Contact)
