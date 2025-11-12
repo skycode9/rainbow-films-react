@@ -52,19 +52,13 @@ function Navigation() {
   }, [])
 
   const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'hero') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-      setIsOpen(false)
-      return
-    }
     const element = document.getElementById(sectionId)
     if (element) {
-      // Use scrollIntoView instead of offsetTop to avoid forced reflows
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      // Adjust for fixed navbar
-      setTimeout(() => {
-        window.scrollBy({ top: -80, behavior: 'smooth' })
-      }, 0)
+      const offsetTop = element.offsetTop - 80 // Adjust for fixed navbar
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      })
     }
     setIsOpen(false)
   }

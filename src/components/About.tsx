@@ -5,14 +5,14 @@ import { Linkedin, Mail } from "lucide-react";
 
 function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -50px 0px" });
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.1,
+    margin: "0px 0px -50px 0px",
+  });
 
   return (
-    <section
-      id="about"
-      className="py-12 sm:py-16 lg:py-20 bg-black"
-      ref={ref}
-    >
+    <section id="about" className="py-12 sm:py-16 lg:py-20 bg-black" ref={ref}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-8 sm:mb-12 lg:mb-16"
@@ -29,8 +29,12 @@ function About() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
+            <div className="absolute inset-0 bg-rainbow-gradient" />
           </motion.div>
         </motion.div>
 
@@ -140,8 +144,12 @@ function About() {
               initial={{ opacity: 0, scaleX: 0 }}
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
+              style={{
+                maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
+              <div className="absolute inset-0 bg-rainbow-gradient" />
             </motion.div>
             <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
               A collective of passionate creatives and storytellers bringing
@@ -284,4 +292,4 @@ const teamMembers = [
   },
 ];
 
-export default memo(About)
+export default memo(About);

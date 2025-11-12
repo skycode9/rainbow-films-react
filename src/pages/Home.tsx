@@ -11,19 +11,11 @@ export default function Home() {
   return (
     <main className="bg-black text-white overflow-hidden">
       <Navigation />
-      <section id="hero">
-        <Hero />
-      </section>
-      <section id="films">
-        <Films />
-      </section>
-      <section id="about">
-        <About />
-      </section>
+      <Hero />
+      <Films />
+      <About />
       <Clients />
-      <section id="contact">
-        <Contact />
-      </section>
+      <Contact />
       <Footer />
     </main>
   );

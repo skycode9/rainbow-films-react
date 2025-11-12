@@ -1,5 +1,5 @@
-import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { X } from "lucide-react";
+import { useEffect } from "react";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -7,27 +7,31 @@ interface VideoModalProps {
   videoUrl: string;
 }
 
-export default function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProps) {
+export default function VideoModal({
+  isOpen,
+  onClose,
+  videoUrl,
+}: VideoModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 
   const getEmbedUrl = (url: string) => {
-    const videoId = url.split('v=')[1]?.split('&')[0];
+    const videoId = url.split("v=")[1]?.split("&")[0];
     return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
   };
 
@@ -35,7 +39,7 @@ export default function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-      <div className="relative w-full max-w-4xl mx-auto bg-black rounded-2xl overflow-hidden shadow-2xl">
+      <div className="relative w-full max-w-4xl mx-auto bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20">
         <button
           className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors duration-200"
           onClick={onClose}
@@ -43,7 +47,7 @@ export default function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProp
           <X size={20} />
         </button>
 
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
           <iframe
             src={getEmbedUrl(videoUrl)}
             className="absolute inset-0 w-full h-full"
@@ -57,8 +61,12 @@ export default function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProp
         <div className="p-6 bg-gradient-to-r from-gray-900 to-black">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">Rainbow Films</h3>
-              <p className="text-gray-300 text-sm">Creating cinematic experiences that inspire</p>
+              <h3 className="text-xl font-bold text-white mb-2">
+                Rainbow Films
+              </h3>
+              <p className="text-gray-300 text-sm">
+                Creating cinematic experiences that inspire
+              </p>
             </div>
             <div className="text-right">
               <p className="text-gray-400 text-xs">Press ESC to close</p>

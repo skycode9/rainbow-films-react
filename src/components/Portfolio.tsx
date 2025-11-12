@@ -1,72 +1,95 @@
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef, useState, useMemo, memo } from 'react'
-import { Play, ExternalLink } from 'lucide-react'
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState, useMemo, memo } from "react";
+import { Play, ExternalLink } from "lucide-react";
 
 function Films() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" })
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.1,
+    margin: "0px 0px -100px 0px",
+  });
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ['All', 'Commercial', 'Documentary', 'Music Video', 'Short Film']
+  const categories = [
+    "All",
+    "Commercial",
+    "Documentary",
+    "Music Video",
+    "Short Film",
+  ];
 
   const projects = [
     {
       id: 1,
-      title: 'Ethereal Dreams',
-      category: 'Music Video',
-      description: 'A visually stunning music video featuring ethereal landscapes and dynamic cinematography.',
-      thumbnail: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
+      title: "Ethereal Dreams",
+      category: "Music Video",
+      description:
+        "A visually stunning music video featuring ethereal landscapes and dynamic cinematography.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
     {
       id: 2,
-      title: 'Brand Evolution',
-      category: 'Commercial',
-      description: 'A compelling brand story showcasing innovation and growth in the tech industry.',
-      thumbnail: 'https://images.unsplash.com/photo-1551818255-e6e10975cd17?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
+      title: "Brand Evolution",
+      category: "Commercial",
+      description:
+        "A compelling brand story showcasing innovation and growth in the tech industry.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1551818255-e6e10975cd17?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
     {
       id: 3,
-      title: 'Ocean Depths',
-      category: 'Documentary',
-      description: 'An immersive documentary exploring the mysteries of deep ocean ecosystems.',
-      thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
+      title: "Ocean Depths",
+      category: "Documentary",
+      description:
+        "An immersive documentary exploring the mysteries of deep ocean ecosystems.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
     {
       id: 4,
-      title: 'Midnight Runner',
-      category: 'Short Film',
-      description: 'A noir-inspired short film about redemption and second chances.',
-      thumbnail: 'https://images.unsplash.com/photo-1489599904472-445b83c3fb98?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
+      title: "Midnight Runner",
+      category: "Short Film",
+      description:
+        "A noir-inspired short film about redemption and second chances.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1489599904472-445b83c3fb98?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
     {
       id: 5,
-      title: 'Urban Pulse',
-      category: 'Music Video',
-      description: 'High-energy music video capturing the rhythm and energy of city life.',
-      thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
+      title: "Urban Pulse",
+      category: "Music Video",
+      description:
+        "High-energy music video capturing the rhythm and energy of city life.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
     },
     {
       id: 6,
-      title: 'Innovation Summit',
-      category: 'Commercial',
-      description: 'Corporate event coverage showcasing cutting-edge technology and innovation.',
-      thumbnail: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop',
-      videoUrl: 'https://www.youtube.com/watch?v=eeJFh3YhPEs'
-    }
-  ]
+      title: "Innovation Summit",
+      category: "Commercial",
+      description:
+        "Corporate event coverage showcasing cutting-edge technology and innovation.",
+      thumbnail:
+        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop",
+      videoUrl: "https://www.youtube.com/watch?v=eeJFh3YhPEs",
+    },
+  ];
 
   const filteredProjects = useMemo(
-    () => selectedCategory === 'All' 
-      ? projects 
-      : projects.filter(project => project.category === selectedCategory),
+    () =>
+      selectedCategory === "All"
+        ? projects
+        : projects.filter((project) => project.category === selectedCategory),
     [selectedCategory]
-  )
+  );
 
   return (
     <section id="films" className="py-20 bg-black" ref={ref}>
@@ -78,7 +101,7 @@ function Films() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-white">Our</span>{' '}
+            <span className="text-white">Our</span>{" "}
             <span className="text-white">Films</span>
           </h2>
           <motion.div
@@ -86,12 +109,17 @@ function Films() {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
+            <div className="absolute inset-0 bg-rainbow-gradient" />
           </motion.div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Explore our diverse collection of award-winning films, commercials, 
-            and creative content that showcase our passion for visual storytelling.
+            Explore our diverse collection of award-winning films, commercials,
+            and creative content that showcase our passion for visual
+            storytelling.
           </p>
         </motion.div>
 
@@ -107,8 +135,8 @@ function Films() {
               key={category}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 selectedCategory === category
-                  ? 'bg-white text-black'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
               }`}
               onClick={() => setSelectedCategory(category)}
               whileHover={{ scale: 1.05 }}
@@ -120,10 +148,7 @@ function Films() {
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          layout
-        >
+        <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -148,12 +173,12 @@ function Films() {
                     className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors duration-300"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => window.open(project.videoUrl, '_blank')}
+                    onClick={() => window.open(project.videoUrl, "_blank")}
                   >
                     <Play size={24} />
                   </motion.button>
                 </div>
-                
+
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-black/70 text-white text-sm font-semibold rounded-full">
@@ -170,12 +195,12 @@ function Films() {
                 <p className="text-gray-300 text-sm leading-relaxed mb-4">
                   {project.description}
                 </p>
-                
+
                 <div className="flex items-center justify-between">
                   <motion.button
                     className="text-white font-semibold hover:text-gray-300 transition-colors duration-300"
                     whileHover={{ x: 5 }}
-                    onClick={() => window.open(project.videoUrl, '_blank')}
+                    onClick={() => window.open(project.videoUrl, "_blank")}
                   >
                     Watch Now →
                   </motion.button>
@@ -212,7 +237,7 @@ function Films() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
 
-export default memo(Films)
+export default memo(Films);

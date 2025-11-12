@@ -25,8 +25,14 @@ const Clients = () => {
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              maskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent" />
+            <div className="absolute inset-0 bg-rainbow-gradient" />
           </motion.div>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             We've had the privilege to work with some of the biggest names in

@@ -13,7 +13,11 @@ import {
 
 function Contact() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -100px 0px" });
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.1,
+    margin: "0px 0px -100px 0px",
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,20 +25,24 @@ function Contact() {
     message: "",
   });
 
-  const handleInputChange = useCallback((
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  }, []);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    []
+  );
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-  }, [formData]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      // Handle form submission here
+      console.log("Form submitted:", formData);
+    },
+    [formData]
+  );
 
   const contactInfo = [
     {
@@ -79,7 +87,18 @@ function Contact() {
               Touch
             </span>
           </h2>
-          <div className="w-24 h-1 bg-rainbow-gradient mx-auto mb-8" />
+          <motion.div
+            className="relative w-32 h-0.5 mx-auto mb-8 overflow-hidden"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          >
+            <div className="absolute inset-0 bg-rainbow-gradient" />
+          </motion.div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Ready to bring your vision to life? Let's discuss your project and
             create something extraordinary together.
@@ -281,4 +300,4 @@ function Contact() {
   );
 }
 
-export default memo(Contact)
+export default memo(Contact);
