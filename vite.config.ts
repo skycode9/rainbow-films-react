@@ -33,30 +33,22 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Separate heavy libraries into their own chunks
-          if (id.includes('node_modules')) {
-            // React core - must be first, exclude @react-three packages
-            if ((id.includes('/react/') || id.includes('/react-dom/') || id.includes('/scheduler/')) 
-                && !id.includes('@react-three')) {
-              return 'react-vendor';
-            }
-            // Three.js ecosystem + postprocessing (postprocessing depends on three)
-            if (id.includes('three') || id.includes('@react-three') || id.includes('postprocessing')) {
-              return 'three-vendor';
-            }
-            // Animation libraries
-            if (id.includes('framer-motion') || id.includes('lenis')) {
-              return 'animation-vendor';
-            }
-            // Lucide icons
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            // Everything else from node_modules
-            return 'vendor';
-          }
-        },
+        manualChunks: {
+          'vendor': [
+            'react',
+            'react-dom',
+            'framer-motion',
+            'lenis'
+          ],
+          'three-vendor': [
+            'three',
+            '@react-three/fiber',
+            '@react-three/drei',
+            '@react-three/postprocessing',
+            'postprocessing',
+            'three-mesh-bvh'
+          ]
+        }
       },
     },
     cssCodeSplit: true,
