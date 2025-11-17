@@ -24,22 +24,55 @@ function Contact() {
     company: "",
     message: "",
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
       setFormData((prev) => ({
         ...prev,
-        [e.target.name]: e.target.value,
+        [name]: value,
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
       }));
     },
     []
   );
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
-      // Handle form submission here
-      console.log("Form submitted:", formData);
+
+      const newErrors: { [key: string]: string } = {};
+      if (!formData.name.trim()) {
+        newErrors.name = "Name is required";
+      }
+      if (!formData.email.trim()) {
+        newErrors.email = "Email is required";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = "Enter a valid email";
+      }
+      if (!formData.message.trim()) {
+        newErrors.message = "Message is required";
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        setStatus("error");
+        setStatusMessage("Please fix the errors above.");
+        return;
+      }
+
+      setStatus("success");
+      setStatusMessage("Thank you! Your message has been sent.");
+      setFormData({ name: "", email: "", company: "", message: "" });
+      setErrors({});
     },
     [formData]
   );
@@ -93,8 +126,10 @@ function Contact() {
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             style={{
-              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+              maskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
             }}
           >
             <div className="absolute inset-0 bg-rainbow-gradient" />
@@ -138,6 +173,9 @@ function Contact() {
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
                     placeholder="Your name"
                   />
+                  {errors.name && (
+                    <p className="mt-2 text-sm text-red-500">{errors.name}</p>
+                  )}
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -160,6 +198,9 @@ function Contact() {
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
                     placeholder="your@email.com"
                   />
+                  {errors.email && (
+                    <p className="mt-2 text-sm text-red-500">{errors.email}</p>
+                  )}
                 </motion.div>
               </div>
 
@@ -206,6 +247,9 @@ function Contact() {
                   className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300 resize-none"
                   placeholder="Tell us about your project..."
                 />
+                {errors.message && (
+                  <p className="mt-2 text-sm text-red-500">{errors.message}</p>
+                )}
               </motion.div>
 
               <motion.button
@@ -218,8 +262,17 @@ function Contact() {
                 transition={{ duration: 0.6, delay: 0.7 }}
               >
                 <Send size={20} />
-                Send Message
+                {status === "submitting" ? "Sending..." : "Send Message"}
               </motion.button>
+              {status !== "idle" && statusMessage && (
+                <p
+                  className={`mt-4 text-sm ${
+                    status === "success" ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {statusMessage}
+                </p>
+              )}
             </form>
           </motion.div>
 
@@ -288,8 +341,11 @@ function Contact() {
               transition={{ duration: 0.8, delay: 1 }}
             >
               <p className="text-gray-300 italic mb-4">
-                "Every great film begins with a conversation. Let's start
-                yours."
+                "Somewhere over the{" "}
+                <span className="text-transparent bg-clip-text bg-rainbow-gradient font-semibold">
+                  rainbow
+                </span>
+                , way up high..."
               </p>
               <div className="w-16 h-1 bg-white" />
             </motion.div>

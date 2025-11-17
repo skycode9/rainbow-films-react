@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import {
   Mail,
   MapPin,
@@ -14,6 +14,11 @@ import {
 export default function Footer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const scrollToSection = (sectionId: string) => {
     if (sectionId === "home" || sectionId === "hero") {
@@ -30,6 +35,28 @@ export default function Footer() {
       }, 0);
     }
   };
+
+  const handleSubscribe = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      if (!email.trim()) {
+        setStatus("error");
+        setStatusMessage("Email is required");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setStatus("error");
+        setStatusMessage("Enter a valid email");
+        return;
+      }
+
+      setStatus("success");
+      setStatusMessage("Subscribed successfully!");
+      setEmail("");
+    },
+    [email]
+  );
 
   // Get current year dynamically
   const currentYear = new Date().getFullYear();
@@ -99,20 +126,34 @@ export default function Footer() {
 
             {/* Newsletter Signup */}
             <div className="mb-8">
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
-                />
-                <motion.button
-                  className="px-4 py-2 bg-white text-black text-sm font-semibold rounded hover:bg-gray-200 transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Subscribe
-                </motion.button>
-              </div>
+              <form onSubmit={handleSubscribe} className="space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
+                  />
+                  <motion.button
+                    type="submit"
+                    className="px-4 py-2 bg-white text-black text-sm font-semibold rounded hover:bg-gray-200 transition-colors duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {status === "submitting" ? "Subscribing..." : "Subscribe"}
+                  </motion.button>
+                </div>
+                {status !== "idle" && statusMessage && (
+                  <p
+                    className={`text-xs ${
+                      status === "success" ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {statusMessage}
+                  </p>
+                )}
+              </form>
             </div>
 
             {/* Social Links */}
@@ -152,7 +193,11 @@ export default function Footer() {
               <span>© {currentYear} Rainbow Films. Made with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 <Heart size={16} className="text-red-500 fill-current" />
               </motion.div>

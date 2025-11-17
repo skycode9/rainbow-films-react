@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, memo } from "react";
-import { Linkedin, Mail } from "lucide-react";
 
 function About() {
   const ref = useRef(null);
@@ -30,8 +29,10 @@ function About() {
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             style={{
-              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+              maskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
             }}
           >
             <div className="absolute inset-0 bg-rainbow-gradient" />
@@ -145,8 +146,10 @@ function About() {
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
               style={{
-                maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+                maskImage:
+                  "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
               }}
             >
               <div className="absolute inset-0 bg-rainbow-gradient" />
@@ -158,79 +161,32 @@ function About() {
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
-                className="group relative"
+                className="group"
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
               >
-                <div className="relative bg-gradient-to-br from-zinc-900/50 to-black/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800/50 hover:border-gray-700/80 transition-all duration-500">
-                  {/* Rainbow Blur Effect on Hover */}
-                  <div className="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/25 via-blue-500/25 via-cyan-500/25 via-green-500/25 via-yellow-500/25 via-orange-500/25 to-pink-500/25 blur-2xl" />
-                  </div>
-
-                  <div className="p-6">
-                    {/* Profile Image */}
-                    <div className="relative mb-5 mx-auto w-32 h-32">
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-400/20 to-gray-600/20 rounded-full blur-md group-hover:blur-lg transition-all duration-500" />
-                      <motion.div
-                        className="relative w-full h-full rounded-full overflow-hidden border-2 border-gray-700/50 group-hover:border-gray-600/80 transition-all duration-500"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </motion.div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="text-center">
-                      <h4 className="text-xl font-semibold text-white mb-1 group-hover:text-gray-100 transition-colors duration-300">
-                        {member.name}
-                      </h4>
-                      <p
-                        className={`text-sm font-medium bg-gradient-to-r ${member.accentColor} bg-clip-text text-transparent mb-3`}
-                      >
-                        {member.role}
-                      </p>
-                      <p className="text-sm text-gray-400 leading-relaxed mb-4 group-hover:text-gray-300 transition-colors duration-300">
-                        {member.tagline}
-                      </p>
-
-                      {/* Social Icons */}
-                      <div className="flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <motion.button
-                          className="p-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-colors duration-300"
-                          whileHover={{ scale: 1.1, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Linkedin className="w-4 h-4 text-gray-400" />
-                        </motion.button>
-                        <motion.button
-                          className="p-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-full transition-colors duration-300"
-                          whileHover={{ scale: 1.1, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Mail className="w-4 h-4 text-gray-400" />
-                        </motion.button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Accent Line */}
-                  <div
-                    className={`h-0.5 bg-gradient-to-r ${member.accentColor} opacity-50 group-hover:opacity-100 transition-opacity duration-500`}
+                {/* Profile Image - Portrait */}
+                <div className="relative w-full aspect-[3/4] mb-6 overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
                   />
+                </div>
+
+                {/* Content */}
+                <div className="text-center">
+                  <h4 className="text-xl font-bold text-white mb-2">
+                    {member.name}
+                  </h4>
+                  <p className="text-sm text-gray-400">{member.role}</p>
                 </div>
               </motion.div>
             ))}

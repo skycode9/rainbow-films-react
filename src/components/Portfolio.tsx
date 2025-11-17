@@ -10,15 +10,6 @@ function Films() {
     amount: 0.1,
     margin: "0px 0px -100px 0px",
   });
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const categories = [
-    "All",
-    "Commercial",
-    "Documentary",
-    "Music Video",
-    "Short Film",
-  ];
 
   const projects = [
     {
@@ -83,14 +74,6 @@ function Films() {
     },
   ];
 
-  const filteredProjects = useMemo(
-    () =>
-      selectedCategory === "All"
-        ? projects
-        : projects.filter((project) => project.category === selectedCategory),
-    [selectedCategory]
-  );
-
   return (
     <section id="films" className="py-20 bg-black" ref={ref}>
       <div className="container mx-auto px-6">
@@ -110,8 +93,10 @@ function Films() {
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             style={{
-              maskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)'
+              maskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%)",
             }}
           >
             <div className="absolute inset-0 bg-rainbow-gradient" />
@@ -123,33 +108,12 @@ function Films() {
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-4 mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {categories.map((category) => (
-            <motion.button
-              key={category}
-              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                selectedCategory === category
-                  ? "bg-white text-black"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
-              }`}
-              onClick={() => setSelectedCategory(category)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category}
-            </motion.button>
-          ))}
-        </motion.div>
-
         {/* Projects Grid */}
-        <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" layout>
-          {filteredProjects.map((project, index) => (
+        <motion.div
+          className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          layout
+        >
+          {projects.map((project, index) => (
             <motion.div
               key={project.id}
               className="group relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-white transition-all duration-500"
@@ -221,20 +185,6 @@ function Films() {
         </motion.div>
 
         {/* View All Button */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <motion.button
-            className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all duration-300 shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View All Projects
-          </motion.button>
-        </motion.div>
       </div>
     </section>
   );
