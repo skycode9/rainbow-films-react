@@ -105,7 +105,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 text-gray-300">
                 <MapPin size={16} className="text-white" />
-                <span className="text-sm">Ahemdabad, Gujarat</span>
+                <span className="text-sm">Anand, Gujarat</span>
               </div>
             </div>
           </motion.div>
@@ -132,8 +132,15 @@ export default function Footer() {
                     type="email"
                     placeholder="Your email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (status === "error") setStatus("idle");
+                    }}
+                    className={`flex-1 px-3 py-2 bg-gray-800 border rounded text-sm text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
+                      status === "error"
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-gray-700 focus:border-white"
+                    }`}
                   />
                   <motion.button
                     type="submit"

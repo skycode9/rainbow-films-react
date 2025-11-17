@@ -21,7 +21,7 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    company: "",
+    subject: "",
     message: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -58,6 +58,9 @@ function Contact() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
         newErrors.email = "Enter a valid email";
       }
+      if (!formData.subject.trim()) {
+        newErrors.subject = "Subject is required";
+      }
       if (!formData.message.trim()) {
         newErrors.message = "Message is required";
       }
@@ -71,7 +74,7 @@ function Contact() {
 
       setStatus("success");
       setStatusMessage("Thank you! Your message has been sent.");
-      setFormData({ name: "", email: "", company: "", message: "" });
+      setFormData({ name: "", email: "", subject: "", message: "" });
       setErrors({});
     },
     [formData]
@@ -93,7 +96,7 @@ function Contact() {
     {
       icon: MapPin,
       title: "Location",
-      info: "Ahemdabad, Gujarat",
+      info: "Anand, Gujarat",
       link: "#",
     },
   ];
@@ -169,8 +172,11 @@ function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
+                    className={`w-full px-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
+                      errors.name
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-gray-700 focus:border-white"
+                    }`}
                     placeholder="Your name"
                   />
                   {errors.name && (
@@ -194,8 +200,11 @@ function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300"
+                    className={`w-full px-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
+                      errors.email
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-gray-700 focus:border-white"
+                    }`}
                     placeholder="your@email.com"
                   />
                   {errors.email && (
@@ -210,20 +219,27 @@ function Contact() {
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 <label
-                  htmlFor="company"
+                  htmlFor="subject"
                   className="block text-gray-300 mb-2 font-semibold"
                 >
-                  Company
+                  Subject *
                 </label>
                 <input
                   type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors duration-300"
-                  placeholder="Your company"
+                  className={`w-full px-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 ${
+                    errors.subject
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-700 focus:border-white"
+                  }`}
+                  placeholder="Your subject"
                 />
+                {errors.subject && (
+                  <p className="mt-2 text-sm text-red-500">{errors.subject}</p>
+                )}
               </motion.div>
 
               <motion.div
@@ -242,9 +258,12 @@ function Contact() {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  required
                   rows={6}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-white focus:outline-none transition-colors duration-300 resize-none"
+                  className={`w-full px-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-300 resize-none ${
+                    errors.message
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-700 focus:border-white"
+                  }`}
                   placeholder="Tell us about your project..."
                 />
                 {errors.message && (
@@ -342,7 +361,13 @@ function Contact() {
             >
               <p className="text-gray-300 italic mb-4">
                 "Somewhere over the{" "}
-                <span className="text-transparent bg-clip-text bg-rainbow-gradient font-semibold">
+                <span
+                  className="bg-rainbow-gradient bg-clip-text text-transparent font-semibold"
+                  style={{
+                    WebkitTextFillColor: "transparent",
+                    paddingInline: "2px",
+                  }}
+                >
                   rainbow
                 </span>
                 , way up high..."

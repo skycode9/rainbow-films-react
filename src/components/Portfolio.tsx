@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState, useMemo, memo } from "react";
+import { useRef, useState, useMemo, memo, Suspense, lazy } from "react";
 import { Play, ExternalLink } from "lucide-react";
+
+// Lazy load VideoModal
+const VideoModal = lazy(() => import("./VideoModal"));
 
 function Films() {
   const ref = useRef(null);
@@ -10,6 +13,7 @@ function Films() {
     amount: 0.1,
     margin: "0px 0px -100px 0px",
   });
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   const projects = [
     {
@@ -124,7 +128,7 @@ function Films() {
               layout
             >
               {/* Thumbnail */}
-              <div className="relative aspect-video overflow-hidden">
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={project.thumbnail}
                   alt={project.title}
@@ -132,15 +136,16 @@ function Films() {
                   decoding="async"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
                   <motion.button
                     className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-black hover:bg-gray-200 transition-colors duration-300"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => window.open(project.videoUrl, "_blank")}
+                    onClick={() => setSelectedVideo(project.videoUrl)}
                   >
-                    <Play size={24} />
+                    <Play size={24} fill="currentColor" />
                   </motion.button>
+                  {/* <p className="text-white font-semibold text-lg">Watch Now</p> */}
                 </div>
 
                 {/* Category Badge */}
@@ -153,10 +158,10 @@ function Films() {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-white transition-colors duration-300">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-white transition-colors duration-300">
                   {project.title}
                 </h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                <p className="text-gray-400 text-sm mb-4 line-clamp-1">
                   {project.description}
                 </p>
 
@@ -164,7 +169,7 @@ function Films() {
                   <motion.button
                     className="text-white font-semibold hover:text-gray-300 transition-colors duration-300"
                     whileHover={{ x: 5 }}
-                    onClick={() => window.open(project.videoUrl, "_blank")}
+                    onClick={() => setSelectedVideo(project.videoUrl)}
                   >
                     Watch Now →
                   </motion.button>
@@ -172,6 +177,7 @@ function Films() {
                     className="p-2 text-gray-400 hover:text-white transition-colors duration-300"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
+                    onClick={() => window.open(project.videoUrl, "_blank")}
                   >
                     <ExternalLink size={18} />
                   </motion.button>
@@ -186,6 +192,17 @@ function Films() {
 
         {/* View All Button */}
       </div>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <Suspense fallback={null}>
+          <VideoModal
+            isOpen={!!selectedVideo}
+            onClose={() => setSelectedVideo(null)}
+            videoUrl={selectedVideo}
+          />
+        </Suspense>
+      )}
     </section>
   );
 }
