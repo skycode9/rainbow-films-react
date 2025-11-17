@@ -161,32 +161,40 @@ function About() {
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
-                className="group"
+                className="group relative"
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
               >
-                {/* Profile Image - Portrait */}
-                <div className="relative w-full aspect-[3/4] mb-6 overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                {/* Rainbow Border on Hover */}
+                <div className="absolute -inset-0.5 bg-rainbow-gradient rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500" />
 
-                {/* Content */}
-                <div className="text-center">
-                  <h4 className="text-xl font-bold text-white mb-2">
-                    {member.name}
-                  </h4>
-                  <p className="text-sm text-gray-400">{member.role}</p>
+                <div className="relative bg-black rounded-lg overflow-hidden">
+                  {/* Profile Image - Portrait */}
+                  <div className="relative w-full h-60 overflow-hidden">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="text-center py-3 bg-black">
+                    <h4 className="text-base font-bold text-white mb-0.5 transition-colors duration-300">
+                      {member.name}
+                    </h4>
+                    <p className="text-xs text-gray-400 transition-colors duration-300">
+                      {member.role}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
