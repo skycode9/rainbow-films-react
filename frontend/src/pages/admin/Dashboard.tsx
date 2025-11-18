@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Film, Users, Building2, Mail, LogOut, Bell } from "lucide-react";
+import {
+  Film,
+  Users,
+  Building2,
+  Mail,
+  LogOut,
+  Bell,
+  Video,
+} from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   filmsAPI,
@@ -97,6 +105,13 @@ export default function Dashboard() {
       color: "from-orange-500 to-orange-600",
       link: "/admin/subscribers",
     },
+    {
+      title: "Hero Video",
+      count: "⚙️",
+      icon: Video,
+      color: "from-red-500 to-red-600",
+      link: "/admin/settings",
+    },
   ];
 
   return (
@@ -165,48 +180,6 @@ export default function Dashboard() {
                 </div>
               </motion.div>
             ))}
-            <Link
-              to="/admin/contacts"
-              className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-white transition-all group"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <Mail className="text-white" size={32} />
-                <span className="text-3xl font-bold text-white">
-                  {stats.contacts}
-                </span>
-              </div>
-              <h3 className="text-gray-400 group-hover:text-white transition-colors">
-                Contact Messages
-              </h3>
-            </Link>
-
-            <Link
-              to="/admin/subscribers"
-              className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-white transition-all group"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <Mail className="text-white" size={32} />
-                <span className="text-3xl font-bold text-white">
-                  Newsletter
-                </span>
-              </div>
-              <h3 className="text-gray-400 group-hover:text-white transition-colors">
-                Subscribers
-              </h3>
-            </Link>
-
-            <Link
-              to="/admin/settings"
-              className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-white transition-all group"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <Mail className="text-white" size={32} />
-                <span className="text-3xl font-bold text-white">Settings</span>
-              </div>
-              <h3 className="text-gray-400 group-hover:text-white transition-colors">
-                Site Configuration
-              </h3>
-            </Link>
           </div>
 
           {/* Quick Actions */}
