@@ -73,12 +73,17 @@ export const clientsAPI = {
 
 // Contact API
 export const contactAPI = {
-  getAll: () => api.get("/contact"),
-  getOne: (id: string) => api.get(`/contact/${id}`),
-  submit: (data: any) => api.post("/contact", data),
-  updateStatus: (id: string, status: string) =>
-    api.put(`/contact/${id}`, { status }),
-  delete: (id: string) => api.delete(`/contact/${id}`),
+  getAll: () => api.get("/contacts"),
+  getOne: (id: string) => api.get(`/contacts/${id}`),
+  submit: (data: any) => api.post("/contacts", data),
+  markAsRead: (id: string) => api.patch(`/contacts/${id}/read`),
+  delete: (id: string) => api.delete(`/contacts/${id}`),
+};
+
+// Subscribers API
+export const subscribersAPI = {
+  getAll: () => api.get("/subscribers"),
+  delete: (id: string) => api.delete(`/subscribers/${id}`),
 };
 
 // Upload API

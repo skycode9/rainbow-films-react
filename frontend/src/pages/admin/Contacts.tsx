@@ -36,15 +36,14 @@ export default function Contacts() {
     }
   };
 
-  const handleToggleStatus = async (id: string, currentStatus: string) => {
-    const newStatus = currentStatus === "pending" ? "read" : "pending";
+  const handleMarkAsRead = async (id: string) => {
     try {
-      await contactAPI.updateStatus(id, newStatus);
+      await contactAPI.markAsRead(id);
       setContacts(
-        contacts.map((c) => (c._id === id ? { ...c, status: newStatus } : c))
+        contacts.map((c) => (c._id === id ? { ...c, status: "read" } : c))
       );
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error("Error marking as read:", error);
     }
   };
 
@@ -114,23 +113,20 @@ export default function Contacts() {
                     )}
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() =>
-                        handleToggleStatus(contact._id, contact.status)
-                      }
-                      className={`p-2 rounded-lg transition-colors ${
-                        contact.status === "read"
-                          ? "bg-green-500/10 text-green-500 hover:bg-green-500/20"
-                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                      }`}
-                      title={
-                        contact.status === "read"
-                          ? "Mark as unread"
-                          : "Mark as read"
-                      }
-                    >
-                      <CheckCircle size={20} />
-                    </button>
+                    {contact.status !== "read" && (
+                      <button
+                        onClick={() => handleMarkAsRead(contact._id)}
+                        className="p-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg transition-colors"
+                        title="Mark as read"
+                      >
+                        <CheckCircle size={20} />
+                      </button>
+                    )}
+                    {contact.status === "read" && (
+                      <span className="px-3 py-1 bg-green-500/10 text-green-500 text-sm rounded-full">
+                        Read
+                      </span>
+                    )}
                     <button
                       onClick={() => handleDelete(contact._id)}
                       className="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500/20 transition-colors"

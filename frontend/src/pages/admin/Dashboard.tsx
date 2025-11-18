@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Film, Users, Building2, Mail, LogOut } from "lucide-react";
+import { Film, Users, Building2, Mail, LogOut, Bell } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-import { filmsAPI, teamAPI, clientsAPI, contactAPI } from "../../services/api";
+import {
+  filmsAPI,
+  teamAPI,
+  clientsAPI,
+  contactAPI,
+  subscribersAPI,
+} from "../../services/api";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -11,6 +17,7 @@ export default function Dashboard() {
     team: 0,
     clients: 0,
     contacts: 0,
+    subscribers: 0,
   });
   const [loading, setLoading] = useState(true);
   const [adminData, setAdminData] = useState<any>(null);
@@ -25,18 +32,21 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      const [filmsRes, teamRes, clientsRes, contactsRes] = await Promise.all([
-        filmsAPI.getAll(),
-        teamAPI.getAll(),
-        clientsAPI.getAll(),
-        contactAPI.getAll(),
-      ]);
+      const [filmsRes, teamRes, clientsRes, contactsRes, subscribersRes] =
+        await Promise.all([
+          filmsAPI.getAll(),
+          teamAPI.getAll(),
+          clientsAPI.getAll(),
+          contactAPI.getAll(),
+          subscribersAPI.getAll(),
+        ]);
 
       setStats({
         films: filmsRes.data.length,
         team: teamRes.data.length,
         clients: clientsRes.data.length,
         contacts: contactsRes.data.length,
+        subscribers: subscribersRes.data.length,
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -79,6 +89,13 @@ export default function Dashboard() {
       icon: Mail,
       color: "from-green-500 to-green-600",
       link: "/admin/contacts",
+    },
+    {
+      title: "Subscribers",
+      count: stats.subscribers,
+      icon: Bell,
+      color: "from-orange-500 to-orange-600",
+      link: "/admin/subscribers",
     },
   ];
 

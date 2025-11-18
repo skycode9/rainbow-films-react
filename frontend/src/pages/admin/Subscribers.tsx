@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Trash2, ArrowLeft, Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+import { subscribersAPI } from "../../services/api";
 
 interface Subscriber {
   _id: string;
@@ -28,10 +26,7 @@ export default function Subscribers() {
 
   const fetchSubscribers = async () => {
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${API_URL}/subscribers`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await subscribersAPI.getAll();
       setSubscribers(response.data);
       setLoading(false);
     } catch (error) {
@@ -42,10 +37,7 @@ export default function Subscribers() {
 
   const checkNewSubscribers = async () => {
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${API_URL}/subscribers`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await subscribersAPI.getAll();
       const currentCount = subscribers.length;
       const newDataCount = response.data.length;
       if (newDataCount > currentCount) {
@@ -63,10 +55,7 @@ export default function Subscribers() {
     }
 
     try {
-      const token = localStorage.getItem("adminToken");
-      await axios.delete(`${API_URL}/subscribers/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await subscribersAPI.delete(id);
       setSubscribers(subscribers.filter((sub) => sub._id !== id));
     } catch (error) {
       console.error("Error deleting subscriber:", error);

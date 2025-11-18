@@ -80,6 +80,61 @@ const sendWelcomeEmail = async (subscriberEmail) => {
   }
 };
 
+// Send confirmation email to contact form submitter
+const sendContactConfirmation = async (contactData) => {
+  try {
+    const { name, email, subject } = contactData;
+
+    const data = await resend.emails.send({
+      from: process.env.FROM_EMAIL,
+      to: email,
+      subject: "We received your message! 📬",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center; border-radius: 8px 8px 0 0;">
+            <h1 style="color: white; margin: 0;">Thank You for Contacting Us! 📬</h1>
+          </div>
+          <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px;">
+            <p style="font-size: 16px; color: #333;">Hi ${name},</p>
+            <p style="color: #666;">
+              We've received your message regarding "<strong>${subject}</strong>" and our team will get back to you as soon as possible.
+            </p>
+            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
+              <p style="color: #666; margin: 0;">
+                <strong>What happens next?</strong>
+              </p>
+              <ul style="color: #666; margin-top: 10px;">
+                <li>Our team will review your message</li>
+                <li>We typically respond within 24-48 hours</li>
+                <li>You'll receive a reply at this email address</li>
+              </ul>
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${process.env.FRONTEND_URL}" 
+                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                        color: white; 
+                        padding: 12px 30px; 
+                        text-decoration: none; 
+                        border-radius: 25px; 
+                        display: inline-block;">
+                Visit Our Website
+              </a>
+            </div>
+            <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px;">
+              This is an automated confirmation email from Rainbow Films.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error sending contact confirmation:", error);
+    return { success: false, error: error.message };
+  }
+};
+
 // Send notification to admin about new subscriber
 const sendSubscriberNotification = async (subscriberEmail) => {
   try {
@@ -108,6 +163,7 @@ const sendSubscriberNotification = async (subscriberEmail) => {
 
 module.exports = {
   sendContactEmail,
+  sendContactConfirmation,
   sendWelcomeEmail,
   sendSubscriberNotification,
 };

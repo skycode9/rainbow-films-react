@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Contact = require("../models/Contact");
 const authMiddleware = require("../middleware/auth");
-const { sendContactEmail } = require("../services/emailService");
+const {
+  sendContactEmail,
+  sendContactConfirmation,
+} = require("../services/emailService");
 
 // @route   GET /api/contacts
 // @desc    Get all contacts (Admin only)
@@ -54,12 +57,27 @@ router.post("/", async (req, res) => {
     });
 
     if (!emailResult.success) {
-      console.error("Failed to send email:", emailResult.error);
-      // Still return success to user even if email fails
+      console.error("Failed to send admin email:", emailResult.error);
+    }
+
+    // Send confirmation email to user
+    const confirmationResult = await sendContactConfirmation({
+      name,
+      email,
+      subject,
+      message,
+    });
+
+    if (!confirmationResult.success) {
+      console.error(
+        "Failed to send confirmation email:",
+        confirmationResult.error
+      );
     }
 
     res.status(201).json({
-      message: "Thank you for contacting us! We'll get back to you soon.",
+      message:
+        "Thank you for contacting us! We'll get back to you soon. Check your email for confirmation.",
       contact,
     });
   } catch (error) {
