@@ -1,0 +1,67 @@
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
+const connectDB = require("./db");
+
+const app = express();
+const port = process.env.PORT || 8080;
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ Origin blocked:", origin); // ADD THIS
+        console.log("📋 Allowed origins:", allowedOrigins); // ADD THIS
+        callback(new Error("Blocked by CORS: " + origin));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Connect to MongoDB
+connectDB();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Serve static files from public/uploads
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// Routes
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/films", require("./routes/films"));
+app.use("/api/team", require("./routes/team"));
+app.use("/api/clients", require("./routes/clients"));
+app.use("/api/contact", require("./routes/contact"));
+app.use("/api/subscribers", require("./routes/subscribers"));
+app.use("/api/settings", require("./routes/settings"));
+app.use("/api/upload", require("./routes/upload"));
+
+// Root route
+app.get("/", (req, res) => {
+  res.json({ message: "Rainbow Films API Server" });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong!" });
+});
+
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});

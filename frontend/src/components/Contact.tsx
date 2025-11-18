@@ -72,10 +72,37 @@ function Contact() {
         return;
       }
 
-      setStatus("success");
-      setStatusMessage("Thank you! Your message has been sent.");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({});
+      setStatus("submitting");
+      setStatusMessage("");
+
+      try {
+        // Submit to backend API
+        const response = await fetch("http://localhost:5000/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          setStatus("success");
+          setStatusMessage("Thank you! Your message has been sent.");
+          setFormData({ name: "", email: "", subject: "", message: "" });
+          setErrors({});
+        } else {
+          const data = await response.json();
+          setStatus("error");
+          setStatusMessage(
+            data.message || "Failed to send message. Please try again."
+          );
+        }
+      } catch (error) {
+        setStatus("error");
+        setStatusMessage(
+          "Network error. Please check your connection and try again."
+        );
+      }
     },
     [formData]
   );

@@ -1,24 +1,21 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import glsl from 'vite-plugin-glsl'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import glsl from "vite-plugin-glsl";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    glsl()
-  ],
+  plugins: [react(), glsl()],
   server: {
-    port: 3002,
+    port: 5173,
   },
   build: {
-    target: 'esnext',
-    minify: 'terser',
+    target: "esnext",
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log'],
+        pure_funcs: ["console.log"],
         passes: 2,
         dead_code: true,
         conditionals: true,
@@ -34,21 +31,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor': [
-            'react',
-            'react-dom',
-            'framer-motion',
-            'lenis'
+          vendor: ["react", "react-dom", "framer-motion", "lenis"],
+          "three-vendor": [
+            "three",
+            "@react-three/fiber",
+            "@react-three/drei",
+            "@react-three/postprocessing",
+            "postprocessing",
+            "three-mesh-bvh",
           ],
-          'three-vendor': [
-            'three',
-            '@react-three/fiber',
-            '@react-three/drei',
-            '@react-three/postprocessing',
-            'postprocessing',
-            'three-mesh-bvh'
-          ]
-        }
+        },
       },
     },
     cssCodeSplit: true,
@@ -56,7 +48,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'three', 'lenis'],
+    include: ["react", "react-dom", "framer-motion", "three", "lenis"],
     exclude: [],
   },
-})
+});
