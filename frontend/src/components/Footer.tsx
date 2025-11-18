@@ -51,9 +51,36 @@ export default function Footer() {
         return;
       }
 
-      setStatus("success");
-      setStatusMessage("Subscribed successfully!");
-      setEmail("");
+      setStatus("submitting");
+      setStatusMessage("");
+
+      try {
+        const API_URL =
+          import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+        const response = await fetch(`${API_URL}/subscribers`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setStatus("success");
+          setStatusMessage(data.message || "Subscribed successfully!");
+          setEmail("");
+        } else {
+          setStatus("error");
+          setStatusMessage(
+            data.message || "Failed to subscribe. Please try again."
+          );
+        }
+      } catch (error) {
+        setStatus("error");
+        setStatusMessage("Network error. Please try again.");
+      }
     },
     [email]
   );

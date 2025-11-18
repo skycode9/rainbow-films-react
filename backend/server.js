@@ -46,7 +46,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/films", require("./routes/films"));
 app.use("/api/team", require("./routes/team"));
 app.use("/api/clients", require("./routes/clients"));
-app.use("/api/contact", require("./routes/contact"));
+app.use("/api/contacts", require("./routes/contacts"));
 app.use("/api/subscribers", require("./routes/subscribers"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/upload", require("./routes/upload"));

@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Subscriber = require("../models/Subscriber");
 const authMiddleware = require("../middleware/auth");
+const {
+  sendWelcomeEmail,
+  sendSubscriberNotification,
+} = require("../services/emailService");
 
 // @route   GET /api/subscribers
 // @desc    Get all subscribers
@@ -36,7 +40,24 @@ router.post("/", async (req, res) => {
     const subscriber = new Subscriber({ email });
     await subscriber.save();
 
-    res.status(201).json({ message: "Successfully subscribed!" });
+    // Send welcome email to subscriber
+    const welcomeEmail = await sendWelcomeEmail(email);
+    if (!welcomeEmail.success) {
+      console.error("Failed to send welcome email:", welcomeEmail.error);
+    }
+
+    // Send notification to admin
+    const adminNotification = await sendSubscriberNotification(email);
+    if (!adminNotification.success) {
+      console.error(
+        "Failed to send admin notification:",
+        adminNotification.error
+      );
+    }
+
+    res.status(201).json({
+      message: "Successfully subscribed! Check your email for confirmation.",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
