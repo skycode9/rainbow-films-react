@@ -1,2 +1,10 @@
 node_modules
 .env
+backend/public/uploads/*
+*.mp4
+*.mov
+*.webm
+*.avi
+dist
+build
+ADMIN_DASHBOARD_GUIDE.md
