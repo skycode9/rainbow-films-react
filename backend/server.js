@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 require("dotenv").config();
 const connectDB = require("./db");
 
@@ -20,8 +21,8 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.log("❌ Origin blocked:", origin); // ADD THIS
-        console.log("📋 Allowed origins:", allowedOrigins); // ADD THIS
+        console.log("❌ Origin blocked:", origin);
+        console.log("📋 Allowed origins:", allowedOrigins);
         callback(new Error("Blocked by CORS: " + origin));
       }
     },
@@ -39,7 +40,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Serve static files from public/uploads
-const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
 // Routes
@@ -52,9 +52,17 @@ app.use("/api/subscribers", require("./routes/subscribers"));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/upload", require("./routes/upload"));
 
+// Serve static files from frontend build (PRODUCTION)
+app.use(express.static(path.join(__dirname, "public")));
+
 // Root route
 app.get("/", (req, res) => {
   res.json({ message: "Rainbow Films API Server" });
+});
+
+// Catch-all route for frontend (SPA routing)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Error handling middleware
