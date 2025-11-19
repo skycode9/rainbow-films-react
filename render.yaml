@@ -30,7 +30,6 @@ services:
   - type: web
     name: rainbow-films-frontend
     env: static
-    region: oregon
     plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
