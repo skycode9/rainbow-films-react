@@ -92,7 +92,7 @@ export default function ClientFormNew() {
       formDataUpload.append("image", file);
 
       const response = await uploadAPI.uploadImage(formDataUpload);
-      const imageUrl = `http://localhost:8080${response.data.url}`;
+      const imageUrl = response.data.url;
 
       setFormData((prev) => ({ ...prev, logo: imageUrl }));
     } catch (err: any) {

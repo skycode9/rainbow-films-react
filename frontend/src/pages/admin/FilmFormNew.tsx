@@ -117,7 +117,7 @@ export default function FilmFormNew() {
       formData.append("image", file);
 
       const response = await uploadAPI.uploadImage(formData);
-      const imageUrl = `http://localhost:8080${response.data.url}`;
+      const imageUrl = response.data.url;
 
       setFormData((prev) => ({ ...prev, thumbnail: imageUrl }));
     } catch (err: any) {

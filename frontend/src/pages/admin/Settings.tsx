@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { Save, Video, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getApiUrl } from "../../utils/config";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+const API_URL = getApiUrl();
 
 export default function Settings() {
   const navigate = useNavigate();

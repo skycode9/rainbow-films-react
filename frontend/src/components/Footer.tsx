@@ -55,8 +55,8 @@ export default function Footer() {
       setStatusMessage("");
 
       try {
-        const API_URL =
-          import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+        const { getApiUrl } = await import("../utils/config");
+        const API_URL = getApiUrl();
         const response = await fetch(`${API_URL}/subscribers`, {
           method: "POST",
           headers: {

@@ -94,7 +94,7 @@ export default function TeamFormNew() {
       formDataUpload.append("image", file);
 
       const response = await uploadAPI.uploadImage(formDataUpload);
-      const imageUrl = `http://localhost:8080${response.data.url}`;
+      const imageUrl = response.data.url;
 
       setFormData((prev) => ({ ...prev, image: imageUrl }));
     } catch (err: any) {
