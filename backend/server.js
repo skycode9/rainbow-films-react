@@ -11,6 +11,7 @@ const port = process.env.PORT || 8080;
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
+  "http://localhost:8080",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -53,16 +54,11 @@ app.use("/api/settings", require("./routes/settings"));
 app.use("/api/upload", require("./routes/upload"));
 
 // Serve static files from frontend build (PRODUCTION)
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// Root route
-app.get("/", (req, res) => {
-  res.json({ message: "Rainbow Films API Server" });
-});
-
-// Catch-all route for frontend (SPA routing)
+// Catch-all route for frontend (SPA routing) - must be after API routes
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
 // Error handling middleware
