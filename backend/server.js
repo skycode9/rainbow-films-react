@@ -12,6 +12,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
   "http://localhost:8080",
+  "https://rainbow-films-react.onrender.com",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
