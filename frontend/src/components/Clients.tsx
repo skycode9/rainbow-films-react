@@ -83,49 +83,39 @@ const Clients = () => {
             <p className="text-gray-400">Loading clients...</p>
           </div>
         ) : (
-          <div className="relative overflow-hidden">
-            <div className="flex clients-scroll space-x-8">
+          <div className="relative overflow-hidden py-8">
+            {/* Gradient fade overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
+            <div className="flex clients-scroll space-x-16 items-center">
               {/* First set */}
-              {displayClients.map((client, index) => (
-                <div
-                  key={`first-${client._id || index}`}
-                  className="flex-shrink-0 w-40 h-20 flex items-center justify-center bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105"
-                >
-                  {client.logo ? (
-                    <img
-                      src={client.logo}
-                      alt={client.name}
-                      className="max-w-full max-h-full object-contain p-4"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span className="text-white text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity duration-300 text-center px-2">
-                      {client.name}
-                    </span>
-                  )}
-                </div>
-              ))}
+              {displayClients.map((client, index) =>
+                client.logo ? (
+                  <motion.img
+                    key={`first-${client._id || index}`}
+                    src={client.logo}
+                    alt={client.name}
+                    className="h-24 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
+                    whileHover={{ scale: 1.15 }}
+                    loading="lazy"
+                  />
+                ) : null
+              )}
 
               {/* Second set for seamless loop */}
-              {displayClients.map((client, index) => (
-                <div
-                  key={`second-${client._id || index}`}
-                  className="flex-shrink-0 w-40 h-20 flex items-center justify-center bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105"
-                >
-                  {client.logo ? (
-                    <img
-                      src={client.logo}
-                      alt={client.name}
-                      className="max-w-full max-h-full object-contain p-4"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span className="text-white text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity duration-300 text-center px-2">
-                      {client.name}
-                    </span>
-                  )}
-                </div>
-              ))}
+              {displayClients.map((client, index) =>
+                client.logo ? (
+                  <motion.img
+                    key={`second-${client._id || index}`}
+                    src={client.logo}
+                    alt={client.name}
+                    className="h-16 w-auto object-contain opacity-50 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
+                    whileHover={{ scale: 1.15 }}
+                    loading="lazy"
+                  />
+                ) : null
+              )}
             </div>
           </div>
         )}
