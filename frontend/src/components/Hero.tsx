@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState, memo, lazy } from "react";
+import { Suspense, useRef, useState, useEffect, memo, lazy } from "react";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -6,6 +6,7 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { MeshTransmissionMaterial } from "@react-three/drei";
 import { Mesh } from "three";
 import { Fluid } from "./fluid/Fluid";
+import { settingsAPI } from "../services/api";
 
 // Lazy load VideoModal to reduce initial bundle
 const VideoModal = lazy(() => import("./VideoModal"));
@@ -44,7 +45,25 @@ const Torus = memo(() => {
 
 function Hero() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState(
+    "https://www.youtube.com/watch?v=eeJFh3YhPEs"
+  );
 
+  useEffect(() => {
+    const fetchHeroVideo = async () => {
+      try {
+        const response = await settingsAPI.get();
+        if (response.data?.heroVideoUrl) {
+          setVideoUrl(response.data.heroVideoUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching hero video:", error);
+        // Keep default video URL on error
+      }
+    };
+
+    fetchHeroVideo();
+  }, []);
 
   const handlePlayClick = () => {
     setIsVideoModalOpen(true);
@@ -96,7 +115,6 @@ function Hero() {
 
         {/* Gradient overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
-
       </div>
 
       {/* Main Content */}
@@ -148,14 +166,13 @@ function Hero() {
         </motion.p>
       </div>
 
-
       {/* Video Modal - Lazy Loaded */}
       {isVideoModalOpen && (
         <Suspense fallback={null}>
           <VideoModal
             isOpen={isVideoModalOpen}
             onClose={() => setIsVideoModalOpen(false)}
-            videoUrl="https://www.youtube.com/watch?v=eeJFh3YhPEs"
+            videoUrl={videoUrl}
           />
         </Suspense>
       )}
@@ -163,4 +180,4 @@ function Hero() {
   );
 }
 
-export default memo(Hero)
+export default memo(Hero);

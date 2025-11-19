@@ -31,11 +31,38 @@ export default function VideoModal({
   }, [isOpen, onClose]);
 
   const getEmbedUrl = (url: string) => {
-    const videoId = url.split("v=")[1]?.split("&")[0];
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    // YouTube
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      let videoId = "";
+      if (url.includes("youtube.com/watch")) {
+        videoId = url.split("v=")[1]?.split("&")[0];
+      } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1]?.split("?")[0];
+      } else if (url.includes("youtube.com/embed/")) {
+        return url; // Already embed URL
+      }
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    }
+
+    // Vimeo
+    if (url.includes("vimeo.com")) {
+      const videoId = url.split("vimeo.com/")[1]?.split("?")[0];
+      return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+    }
+
+    // Direct video files (mp4, webm, etc.)
+    if (url.match(/\.(mp4|webm|ogg)$/i)) {
+      return url;
+    }
+
+    // Default: return as is
+    return url;
   };
 
   if (!isOpen) return null;
+
+  const embedUrl = getEmbedUrl(videoUrl);
+  const isDirectVideo = videoUrl.match(/\.(mp4|webm|ogg)$/i);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
@@ -48,14 +75,24 @@ export default function VideoModal({
         </button>
 
         <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-          <iframe
-            src={getEmbedUrl(videoUrl)}
-            className="absolute inset-0 w-full h-full"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Rainbow Films Video"
-          />
+          {isDirectVideo ? (
+            <video
+              src={embedUrl}
+              className="absolute inset-0 w-full h-full"
+              controls
+              autoPlay
+              title="Rainbow Films Video"
+            />
+          ) : (
+            <iframe
+              src={embedUrl}
+              className="absolute inset-0 w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Rainbow Films Video"
+            />
+          )}
         </div>
 
         <div className="p-6 bg-gradient-to-r from-gray-900 to-black">

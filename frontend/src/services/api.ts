@@ -86,6 +86,12 @@ export const subscribersAPI = {
   delete: (id: string) => api.delete(`/subscribers/${id}`),
 };
 
+// Settings API
+export const settingsAPI = {
+  get: () => api.get("/settings"),
+  update: (data: any) => api.put("/settings", data),
+};
+
 // Upload API
 export const uploadAPI = {
   uploadImage: (formData: FormData) => {
