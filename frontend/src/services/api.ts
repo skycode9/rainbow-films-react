@@ -3,7 +3,7 @@ import axios from "axios";
 // Use production URL if in production, otherwise use env variable or localhost
 const API_URL = import.meta.env.PROD
   ? "https://rainbow-films-react.onrender.com/api"
-  : import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+  : import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: API_URL,
